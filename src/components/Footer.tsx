@@ -22,7 +22,7 @@ export default function Footer() {
         <div className="flex items-center justify-center gap-6 mt-2">
           {/* Instagram */}
           <a
-            href="#"
+            href="https://www.instagram.com/lucamoriss.fit/"
             onClick={e => e.preventDefault()}
             className="flex flex-col items-center group focus:outline-none text-xs font-bold text-white group-hover:text-blue-200"
             aria-label="Instagram"
@@ -33,7 +33,7 @@ export default function Footer() {
           </a>
           {/* WhatsApp */}
           <a
-            href="#"
+            href="https://wa.me/5493516579114"
             onClick={e => e.preventDefault()}
             className="flex flex-col items-center group focus:outline-none text-xs font-bold text-white group-hover:text-blue-200"
             aria-label="WhatsApp"

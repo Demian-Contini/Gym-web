@@ -64,7 +64,9 @@ export default function Home() {
         </div>
       </section>
 
+      
       {/* Sección Cambios Físicos */}
+      {/*
       <section id="cambios-fisicos" className="py-12 px-4 md:px-8 lg:px-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 text-center">Cambios Físicos</h2>
@@ -86,6 +88,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+*/}
 
       {/* Sección Carrusel de Imágenes */}
       <section id="carrusel" className="py-12 px-4 md:px-8 lg:px-12 bg-white">

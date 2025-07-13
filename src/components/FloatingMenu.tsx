@@ -14,88 +14,61 @@ export default function FloatingMenu() {
     setIsOpen(false);
   };
 
+  // Nuevo botón flotante WhatsApp con despliegue de iconos
+  const [isFabOpen, setIsFabOpen] = useState(false);
+  const toggleFab = () => setIsFabOpen((prev) => !prev);
+  const closeFab = () => setIsFabOpen(false);
+
   return (
-    <div className="fixed bottom-6 right-4 z-50">
-      {/* Overlay para cerrar al hacer clic fuera */}
-      {isOpen && (
+    <>
+      {/* Overlay para cerrar al hacer clic fuera del menú rápido */}
+      {isFabOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[1px] transition-all duration-300"
-          onClick={closeMenu}
+          className="fixed inset-0 z-30"
+          onClick={closeFab}
         />
       )}
-      {/* Botón principal */}
-      <button
-        onClick={toggleMenu}
-        className="p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50 relative"
-        aria-label="Abrir menú de redes sociales"
-      >
-        <Image
-          src="/menuRedes.png"
-          alt="Menú"
-          width={56}
-          height={56}
-          className="w-14 h-14"
-        />
-      </button>
-
-      {/* Menú desplegable */}
-      {isOpen && (
-        <div className="absolute bottom-24 right-0 bg-white rounded-lg shadow-xl border border-gray-200 p-6 min-w-[280px] z-50">
-          <div className="text-center mb-4">
-            <h3 className="text-xl font-bold text-black" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.1)' }}>Mis Redes</h3>
-          </div>
-          
-          <div className="space-y-4">
-            {/* Instagram */}
-            <a
-              href="#"
-              onClick={closeMenu}
-              className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <Image
-                src="/instagramMenu.png"
-                alt="Instagram"
-                width={32}
-                height={32}
-                className="w-8 h-8"
-              />
-              <span className="text-black font-bold text-lg" style={{ textShadow: '0.5px 0.5px 1px rgba(0,0,0,0.2)' }}>Instagram</span>
-            </a>
-
-            {/* WhatsApp */}
-            <a
-              href="#"
-              onClick={closeMenu}
-              className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <Image
-                src="/whatsappMenu.png"
-                alt="WhatsApp"
-                width={32}
-                height={32}
-                className="w-8 h-8"
-              />
-              <span className="text-black font-bold text-lg" style={{ textShadow: '0.5px 0.5px 1px rgba(0,0,0,0.2)' }}>WhatsApp</span>
-            </a>
-
-            {/* Email */}
-            <a
-              href="#"
-              onClick={closeMenu}
-              className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <Image
-                src="/correoMenu.png"
-                alt="Email"
-                width={32}
-                height={32}
-                className="w-8 h-8"
-              />
-              <span className="text-black font-bold text-lg" style={{ textShadow: '0.5px 0.5px 1px rgba(0,0,0,0.2)' }}>Email</span>
-            </a>
-          </div>
+      <div className="fixed bottom-6 right-4 z-50">
+        {/* Botones flotantes desplegables */}
+        <div className={`flex flex-col items-end space-y-4 mb-2 transition-all duration-300 z-50 pointer-events-none ${isFabOpen ? 'opacity-100 translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`}>  
+          {/* Instagram */}
+          <a
+            href="https://www.instagram.com/lucamoriss.fit/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition-all pointer-events-auto"
+            aria-label="Instagram"
+            onClick={closeFab}
+          >
+            <Image src="/instagramMenu.png" alt="Instagram" width={40} height={40} className="w-10 h-10" />
+          </a>
+          {/* Mail */}
+          <a
+            href="mailto:lucasmorisok@gmail.com"
+            className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition-all pointer-events-auto"
+            aria-label="Email"
+            onClick={closeFab}
+          >
+            <Image src="/correoMenu.png" alt="Email" width={40} height={40} className="w-10 h-10" />
+          </a>
         </div>
-      )}
-    </div>
+        {/* Botón principal WhatsApp */}
+        <button
+          onClick={() => {
+            if (!isFabOpen) {
+              setIsFabOpen(true);
+            } else {
+              window.open('https://wa.me/5493516579114', '_blank');
+              setIsFabOpen(false);
+            }
+          }}
+          className="w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition-all focus:outline-none pointer-events-auto"
+          aria-label="Abrir chat de WhatsApp"
+          style={{ marginBottom: '8px' }}
+        >
+          <Image src="/whatsappMenu.png" alt="WhatsApp" width={40} height={40} className="w-10 h-10" />
+        </button>
+      </div>
+    </>
   );
 } 
