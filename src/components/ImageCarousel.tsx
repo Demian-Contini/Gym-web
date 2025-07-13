@@ -6,11 +6,20 @@ interface ImageCarouselProps {
   images: string[];
   title?: string;
   description?: string;
+  autoPlayTrigger?: number;
+  isPaused?: boolean;
+  onInteraction?: () => void;
 }
 
-export default function ImageCarousel({ images, title, description }: ImageCarouselProps) {
+export default function ImageCarousel({ 
+  images, 
+  title, 
+  description, 
+  autoPlayTrigger = 0,
+  isPaused = false,
+  onInteraction
+}: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
   // Función de auto-play con pausa en interacción
   useEffect(() => {
@@ -23,10 +32,16 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
     return () => clearInterval(interval);
   }, [images.length, isPaused]);
 
+  // Sincronización con el trigger externo
+  useEffect(() => {
+    setCurrentIndex(autoPlayTrigger % images.length);
+  }, [autoPlayTrigger, images.length]);
+
   // Pausa auto-play cuando el usuario interactúa
   const handleInteraction = () => {
-    setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 3000); // Resume after 3 seconds
+    if (onInteraction) {
+      onInteraction();
+    }
   };
 
   const goToPrevious = () => {
@@ -49,21 +64,21 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
+    <div className="relative w-full max-w-5xl mx-auto">
       {title && (
         <h3 className="text-2xl md:text-3xl font-bold text-black mb-4 text-center">
           {title}
         </h3>
       )}
       {description && (
-        <p className="text-gray-700 text-center mb-6">
+        <p className="text-gray-700 text-center mb-6 px-4">
           {description}
         </p>
       )}
       
-      <div className="relative overflow-hidden rounded-lg shadow-lg">
-        {/* Imagen principal */}
-        <div className="relative h-64 md:h-80 lg:h-96">
+      <div className="relative overflow-hidden rounded-xl shadow-2xl">
+        {/* Imagen principal*/}
+        <div className="relative h-80 sm:h-96 md:h-[500px] lg:h-[600px] xl:h-[700px]">
           {images.map((image, index) => (
             <div
               key={index}
@@ -75,48 +90,49 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
             >
               <img
                 src={image}
-                alt={`Imagen ${index + 1}`}
-                className="w-full h-full object-cover"
+                alt={`Cambio físico ${index + 1}`}
+                className="w-full h-full object-cover object-center"
                 loading="lazy"
               />
             </div>
           ))}
         </div>
 
-        {/* Botones de navegación */}
+        {/* Botones de navegación  */}
         <button
           onClick={goToPrevious}
-          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 
-            bg-black/60 backdrop-blur-sm border border-white/20 
-            text-white p-2 md:p-3 rounded-full 
+          className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 
+            bg-black/70 backdrop-blur-sm border border-white/30 
+            text-white p-3 sm:p-4 rounded-full 
             transition-all duration-300 active:scale-95 
             hover:bg-black/80 hover:scale-110 z-10
-            touch-manipulation"
+            touch-manipulation shadow-lg"
           aria-label="Imagen anterior"
         >
-          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
         <button
           onClick={goToNext}
-          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 
-            bg-black/60 backdrop-blur-sm border border-white/20 
-            text-white p-2 md:p-3 rounded-full 
+          className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 
+            bg-black/70 backdrop-blur-sm border border-white/30 
+            text-white p-3 sm:p-4 rounded-full 
             transition-all duration-300 active:scale-95 
             hover:bg-black/80 hover:scale-110 z-10
-            touch-manipulation"
+            touch-manipulation shadow-lg"
           aria-label="Siguiente imagen"
         >
-          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
           </svg>
         </button>
 
         {/* Image counter */}
-        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm 
-          text-white px-2 py-1 rounded-full text-xs md:text-sm font-medium z-10">
+        <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm 
+          text-white px-3 py-2 rounded-full text-sm sm:text-base font-semibold z-10
+          border border-white/20 shadow-lg">
           {currentIndex + 1} / {images.length}
         </div>
 
@@ -126,7 +142,7 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 md:w-4 md:h-4 rounded-full 
+              className={`w-2 h-2 rounded-full 
                 transition-all duration-300 active:scale-125 
                 touch-manipulation ${
                 index === currentIndex 

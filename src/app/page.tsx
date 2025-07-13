@@ -1,6 +1,37 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import ImageCarousel from '../components/ImageCarousel';
+import TestimonialCardSlider from '../components/TestimonialCardSlider';
+import Form from '../components/Form';
 
 export default function Home() {
+
+
+
+  // Mis 2 Estados locales del Home. Controla cuándo deben cambiar ambos carruseles (solo timing, no contenido)
+  const [autoPlayTrigger, setAutoPlayTrigger] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Timer central que sincroniza el cambio de ambos carruseles
+  useEffect(() => {
+    if (isPaused) return;
+    
+    const interval = setInterval(() => {
+      setAutoPlayTrigger(prev => prev + 1);
+    }, 5000); // Ambos carruseles cambian cada 5 segundos
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  // Pausa ambos carruseles cuando el usuario interactúa con cualquiera
+  const handleInteraction = () => {
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 3000); // Reanuda después de 3 segundos
+  };
+
+
+
   return (
     <div className="min-h-screen">
       {/* Sección Inicio */}
@@ -61,8 +92,8 @@ export default function Home() {
       </section>
 
       {/* Sección Carrusel de Imágenes */}
-      <section id="carrusel" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
+      <section id="carrusel" className="py-16 px-4 bg-white">
+        <div className="w-full max-w-6xl mx-auto">
           <ImageCarousel
             images={[
               '/Cambiosfisic.png',
@@ -72,11 +103,26 @@ export default function Home() {
               '/C1.jpg',
               '/C2.jpg'
             ]}
+            autoPlayTrigger={autoPlayTrigger}
+            isPaused={isPaused}
+            onInteraction={handleInteraction}
             title="Galería de Cambios"
             description="Las transformaciones más impresionantes de nuestros clientes"
           />
         </div>
       </section>
+
+      {/* Sección Testimonios */}
+      <section id="testimonios" className="py-16 px-4 bg-white">
+        <TestimonialCardSlider />
+      </section>
+
+      {/* Sección Contacto */}
+      <section id="contacto">
+        <Form />
+      </section>
+   
+     
     </div>
   );
 }
