@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { testimonialsData } from '../data/testimonials';
 
 // Divide el comentario en dos partes: la primera frase y el resto
@@ -13,7 +14,6 @@ function splitComment(comment: string) {
 
 export default function TestimonialCardSlider() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isUserScrolling = useRef(false); // Nuevo flag
   const isProgrammaticScroll = useRef(false); // Flag robusto
 
   // Estado: índice de la tarjeta activa y si el auto-play está pausado
@@ -31,11 +31,7 @@ export default function TestimonialCardSlider() {
     setTimeout(() => setIsPaused(false), 3000);
   };
 
-  // Cambia a una tarjeta específica y pausa el auto-play
-  const goToSlide = (idx: number) => {
-    handleInteraction();
-    setCurrent(idx);
-  };
+
 
   // Detecta cuántas tarjetas caben en pantalla
   useEffect(() => {
@@ -72,7 +68,7 @@ export default function TestimonialCardSlider() {
       setCurrent((prev) => (prev + 1) % validTestimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [isPaused, validTestimonials.length]);
+  }, [isPaused, validTestimonials.length, current]);
 
   // Centra la tarjeta activa en el contenedor usando scroll horizontal suave
   // (esto es necesario porque el usuario puede ver varias tarjetas a la vez y hacer scroll manual)
@@ -145,7 +141,7 @@ export default function TestimonialCardSlider() {
         className="flex gap-4 md:gap-8 overflow-x-auto pb-4 snap-x scroll-smooth"
         style={{ scrollBehavior: 'smooth' }}
       >
-        {validTestimonials.map((testimonial, idx) => {
+        {validTestimonials.map((testimonial) => {
           const [main, rest] = splitComment(testimonial.comment);
           return (
             <div
@@ -159,9 +155,11 @@ export default function TestimonialCardSlider() {
                 <span className="bg-blue-100 text-blue-700 text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow border border-blue-200">
                   {testimonial.results}
                 </span>
-                <img
+                <Image
                   src={testimonial.image}
                   alt={testimonial.name}
+                  width={56}
+                  height={56}
                   className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover border-2 border-blue-500 shadow"
                 />
               </div>

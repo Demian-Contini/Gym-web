@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { FaWhatsapp } from 'react-icons/fa';
 
 export default function Form() {
@@ -35,9 +36,11 @@ export default function Form() {
     <section className="relative py-16 px-4 bg-gray-50">
       {/* Fondo con imagen y overlay */}
       <div className="absolute inset-0">
-        <img
-          src="/Img-inicioPC.jpg" //CAMBIAAAAAAAAAAAR
+        <Image
+          src="/Img-inicioPC.jpg"
           alt="Clientes felices"
+          width={1920}
+          height={1080}
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/60" />

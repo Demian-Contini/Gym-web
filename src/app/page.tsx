@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import ImageCarousel from '../components/ImageCarousel';
 import TestimonialCardSlider from '../components/TestimonialCardSlider';
 import Form from '../components/Form';
@@ -9,26 +9,7 @@ export default function Home() {
 
 
 
-  // Mis 2 Estados locales del Home. Controla cuándo deben cambiar ambos carruseles (solo timing, no contenido)
-  const [autoPlayTrigger, setAutoPlayTrigger] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
-  // Timer central que sincroniza el cambio de ambos carruseles
-  useEffect(() => {
-    if (isPaused) return;
-    
-    const interval = setInterval(() => {
-      setAutoPlayTrigger(prev => prev + 1);
-    }, 5000); // Ambos carruseles cambian cada 5 segundos
-
-    return () => clearInterval(interval);
-  }, [isPaused]);
-
-  // Pausa ambos carruseles cuando el usuario interactúa con cualquiera
-  const handleInteraction = () => {
-    setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 3000); // Reanuda después de 3 segundos
-  };
 
 
 
@@ -58,7 +39,7 @@ export default function Home() {
         <div className="absolute top-6 right-2 md:top-10 md:right-12 flex flex-col items-end z-10">
           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-2 bg-blue-600/80 px-4 py-2 rounded-lg shadow flex items-center gap-2">
             Personal Trainer
-            <img src="/Verificado.png" alt="Verificado" className="w-7 h-7 md:w-8 md:h-8 inline-block align-middle" />
+            <Image src="/Verificado.png" alt="Verificado" width={32} height={32} className="w-7 h-7 md:w-8 md:h-8 inline-block align-middle" />
           </h2>
           <button
             type="button"
@@ -80,9 +61,11 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div key={idx} className="w-full aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden shadow">
-                <img
+                <Image
                   src="/Cambiosfisic.png"
                   alt={`Cambio físico ${idx + 1}`}
+                  width={400}
+                  height={533}
                   className="w-full h-full object-cover object-center"
                 />
               </div>
@@ -103,9 +86,6 @@ export default function Home() {
               '/C1.jpg',
               '/C2.jpg'
             ]}
-            autoPlayTrigger={autoPlayTrigger}
-            isPaused={isPaused}
-            onInteraction={handleInteraction}
             title="Galería de Cambios"
             description="Las transformaciones más impresionantes de nuestros clientes"
           />

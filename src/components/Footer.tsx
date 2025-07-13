@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-3xl mx-auto flex flex-col items-center gap-4">
         {/* Nombre y eslogan */}
         <h3 className="text-xl font-bold tracking-wide text-center">Lucas Moriss</h3>
-        <p className="text-sm text-blue-200 text-center mb-2">"Transforma tu vida, no solo tu cuerpo"</p>
+        <p className="text-sm text-blue-200 text-center mb-2">&ldquo;Transforma tu vida, no solo tu cuerpo&rdquo;</p>
 
         <a
           href="https://wa.me/549XXXXXXXXXX"
