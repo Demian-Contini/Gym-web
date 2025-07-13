@@ -32,7 +32,7 @@ export default function Navbar() {
           {/* Título centrado en móvil y ubicado normalmente en PC */}
           <div className="flex-1 flex justify-center lg:justify-center">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 text-center lg:text-left">
-              MIGMA
+            Lucas Moris
             </h1>
           </div>
 
@@ -69,8 +69,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center space-x-6">
             <a href="#inicio" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-blue-50 hover:scale-105">Inicio</a>
             <a href="#cambios-fisicos" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-blue-50 hover:scale-105">Cambios Físicos</a>
-            <a href="#comentarios" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-blue-50 hover:scale-105">Comentarios</a>
-            <a href="#quien-soy" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-blue-50 hover:scale-105">¿Quién soy?</a>
+            <a href="#testimonios" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-blue-50 hover:scale-105">Comentarios</a>
             <a href="#contacto" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-blue-50 hover:scale-105">Contacto</a>
           </div>
         </div>
@@ -81,8 +80,7 @@ export default function Navbar() {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
           <a href="#inicio" className="text-gray-700 hover:text-gray-900 block px-4 py-3 rounded-lg text-base font-bold border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200" onClick={() => setIsMenuOpen(false)}>Inicio</a>
           <a href="#cambios-fisicos" className="text-gray-700 hover:text-gray-900 block px-4 py-3 rounded-lg text-base font-bold border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200" onClick={() => setIsMenuOpen(false)}>Cambios Físicos</a>
-          <a href="#comentarios" className="text-gray-700 hover:text-gray-900 block px-4 py-3 rounded-lg text-base font-bold border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200" onClick={() => setIsMenuOpen(false)}>Comentarios</a>
-          <a href="#quien-soy" className="text-gray-700 hover:text-gray-900 block px-4 py-3 rounded-lg text-base font-bold border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200" onClick={() => setIsMenuOpen(false)}>¿Quién soy?</a>
+          <a href="#testimonios" className="text-gray-700 hover:text-gray-900 block px-4 py-3 rounded-lg text-base font-bold border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200" onClick={() => setIsMenuOpen(false)}>Comentarios</a>
           <a href="#contacto" className="text-gray-700 hover:text-gray-900 block px-4 py-3 rounded-lg text-base font-bold border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200" onClick={() => setIsMenuOpen(false)}>Contacto</a>
         </div>
       </div>

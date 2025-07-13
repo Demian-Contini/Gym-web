@@ -52,21 +52,21 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
+    <div className="relative w-full max-w-7xl mx-auto">
       {title && (
-        <h3 className="text-2xl md:text-3xl font-bold text-black mb-4 text-center">
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4 md:mb-6 text-center">
           {title}
         </h3>
       )}
       {description && (
-        <p className="text-gray-700 text-center mb-6">
+        <p className="text-gray-700 text-center mb-6 md:mb-8 text-lg md:text-xl max-w-3xl mx-auto">
           {description}
         </p>
       )}
       
-      <div className="relative overflow-hidden rounded-lg shadow-lg">
+      <div className="relative overflow-hidden rounded-xl shadow-2xl">
         {/* Imagen principal */}
-        <div className="relative h-64 md:h-80 lg:h-96">
+        <div className="relative h-80 md:h-96 lg:h-[600px] xl:h-[700px]">
           {images.map((image, index) => (
             <div
               key={index}
@@ -79,10 +79,11 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
               <Image
                 src={image}
                 alt={`Imagen ${index + 1}`}
-                width={800}
-                height={600}
+                width={1200}
+                height={800}
                 className="w-full h-full object-cover"
                 priority={index === 0}
+                quality={90}
               />
             </div>
           ))}
@@ -91,47 +92,47 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
         {/* Botones de navegación */}
         <button
           onClick={goToPrevious}
-          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 
+          className="absolute left-2 md:left-4 lg:left-8 top-1/2 transform -translate-y-1/2 
             bg-black/60 backdrop-blur-sm border border-white/20 
-            text-white p-2 md:p-3 rounded-full 
+            text-white p-2 md:p-3 lg:p-4 rounded-full 
             transition-all duration-300 active:scale-95 
             hover:bg-black/80 hover:scale-110 z-10
             touch-manipulation"
           aria-label="Imagen anterior"
         >
-          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
         <button
           onClick={goToNext}
-          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 
+          className="absolute right-2 md:right-4 lg:right-8 top-1/2 transform -translate-y-1/2 
             bg-black/60 backdrop-blur-sm border border-white/20 
-            text-white p-2 md:p-3 rounded-full 
+            text-white p-2 md:p-3 lg:p-4 rounded-full 
             transition-all duration-300 active:scale-95 
             hover:bg-black/80 hover:scale-110 z-10
             touch-manipulation"
           aria-label="Siguiente imagen"
         >
-          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
 
         {/* Contador de imágenes */}
-        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm 
-          text-white px-2 py-1 rounded-full text-xs md:text-sm font-medium z-10">
+        <div className="absolute top-4 md:top-6 right-4 md:right-6 bg-black/60 backdrop-blur-sm 
+          text-white px-3 py-2 rounded-full text-sm md:text-base font-medium z-10">
           {currentIndex + 1} / {images.length}
         </div>
 
         {/* Indicador de puntos */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+        <div className="absolute bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3 z-10">
           {images.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 md:w-4 md:h-4 rounded-full 
+              className={`w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-full 
                 transition-all duration-300 active:scale-125 
                 touch-manipulation ${
                 index === currentIndex 

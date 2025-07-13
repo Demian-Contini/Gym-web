@@ -147,7 +147,7 @@ export default function TestimonialCardSlider() {
             <div
               key={testimonial.id}
               role="card"
-              className="relative w-72 md:w-80 flex-shrink-0 bg-white border border-blue-200 rounded-2xl shadow-lg p-4 md:p-6 flex flex-col items-center text-center snap-center"
+              className="relative w-72 md:w-80 flex-shrink-0 bg-white border border-blue-200 rounded-2xl shadow-lg p-4 md:p-6 flex flex-col items-center text-center snap-center transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl"
               style={{ minHeight: 260 }}
             >
               {/* Badge y foto centrados arriba */}

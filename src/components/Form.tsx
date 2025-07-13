@@ -41,27 +41,26 @@ export default function Form() {
           alt="Clientes felices"
           width={1920}
           height={1080}
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center blur-md"
         />
         <div className="absolute inset-0 bg-black/60" />
       </div>
       <div className="relative max-w-lg mx-auto flex flex-col items-center z-10">
-        <span className="text-white text-lg font-semibold bg-blue-700 px-4 py-1 rounded-lg mb-4 shadow">
+        <span className="text-white text-lg font-semibold bg-blue-00 px-4 py-1 rounded-lg mb-6 shadow">
           Ya diste el primer paso
         </span>
         <a
           href="https://wa.me/549XXXXXXXXXX"
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-lg shadow mb-4 transition flex items-center gap-2"
+          className="bg-[#128C4B] hover:bg-[#0d6c37] text-white font-bold px-6 py-2 rounded-lg shadow mb-4 transition flex items-center gap-2"
         >
-          <FaWhatsapp className="w-5 h-5" />
+          <FaWhatsapp className="w-6 h-6" />
           Comunicate por Whatsapp
         </a>
-        <h3 className="text-white text-2xl font-bold mb-2 text-center">
+        <h3 className="text-white text-2xl font-bold mb-2 text-center drop-shadow-lg">
           o enviame tu consulta por correo
         </h3>
-
 
         <form onSubmit={handleSubmit} className="w-full bg-white bg-opacity-95 rounded-2xl shadow-lg p-6 flex flex-col gap-4 mt-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -71,7 +70,7 @@ export default function Form() {
               placeholder="Nombre"
               value={form.nombre}
               onChange={handleChange}
-              className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none text-black placeholder:text-gray-500"
+              className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 focus:outline-none text-black placeholder:text-gray-500 transition-all duration-200 shadow-sm focus:shadow-lg bg-white/90"
             />
             <input
               type="text"
@@ -79,7 +78,7 @@ export default function Form() {
               placeholder="Apellido"
               value={form.apellido}
               onChange={handleChange}
-              className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none text-black placeholder:text-gray-500"
+              className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 focus:outline-none text-black placeholder:text-gray-500 transition-all duration-200 shadow-sm focus:shadow-lg bg-white/90"
             />
           </div>
           <input
@@ -88,7 +87,7 @@ export default function Form() {
             placeholder="Correo electrónico"
             value={form.email}
             onChange={handleChange}
-            className="px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none text-black placeholder:text-gray-500"
+            className="px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 focus:outline-none text-black placeholder:text-gray-500 transition-all duration-200 shadow-sm focus:shadow-lg bg-white/90"
           />
           <textarea
             name="comentario"
@@ -96,7 +95,7 @@ export default function Form() {
             value={form.comentario}
             onChange={handleChange}
             rows={4}
-            className="px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none resize-none text-black placeholder:text-gray-500"
+            className="px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 focus:outline-none resize-none text-black placeholder:text-gray-500 transition-all duration-200 shadow-sm focus:shadow-lg bg-white/90"
           />
           {error && <div className="text-red-600 text-sm text-center">{error}</div>}
           {success && <div className="text-green-600 text-sm text-center">{success}</div>}
@@ -107,8 +106,6 @@ export default function Form() {
             Enviar
           </button>
         </form>
-
-
       </div>
     </section>
   );
