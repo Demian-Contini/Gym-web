@@ -4,8 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 export default function FloatingMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-
   // Nuevo botón flotante WhatsApp con despliegue de iconos
   const [isFabOpen, setIsFabOpen] = useState(false);
   const closeFab = () => setIsFabOpen(false);

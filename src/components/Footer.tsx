@@ -44,7 +44,7 @@ export default function Footer() {
             aria-label="Email"
             style={{ textDecoration: 'none', textShadow: '0.25px 0.25px 0.5px rgba(0,0,0,0.15)' }}
           >
-            <Image src="/correoMenu.png" alt="Email" width={32} height={32} className="w-8 h-8 mb-1" />
+            <Image src="/e-mail.png" alt="Email" width={32} height={32} className="w-8 h-8 mb-1" />
             Email
           </a>
         </div>
