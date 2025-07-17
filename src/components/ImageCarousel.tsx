@@ -2,7 +2,7 @@
 // ---------- Seccion Carousel ----------
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 interface ImageCarouselProps {
@@ -13,7 +13,6 @@ interface ImageCarouselProps {
 
 export default function ImageCarousel({ images, title, description }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
   // Función de auto-play con pausa en interacción
   // useEffect(() => {
@@ -26,8 +25,8 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
 
   // Pausa auto-play cuando el usuario interactúa
   const handleInteraction = () => {
-    setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 3000); // Resume after 3 seconds
+    // setIsPaused(true); // Eliminado
+    // setTimeout(() => setIsPaused(false), 3000); // Eliminado
   };
 
   const goToPrevious = () => {

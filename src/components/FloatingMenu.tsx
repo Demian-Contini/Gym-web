@@ -6,17 +6,8 @@ import Image from 'next/image';
 export default function FloatingMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-
   // Nuevo botón flotante WhatsApp con despliegue de iconos
   const [isFabOpen, setIsFabOpen] = useState(false);
-  const toggleFab = () => setIsFabOpen((prev) => !prev);
   const closeFab = () => setIsFabOpen(false);
 
   return (

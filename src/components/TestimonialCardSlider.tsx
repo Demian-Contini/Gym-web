@@ -18,7 +18,6 @@ export default function TestimonialCardSlider() {
 
   // Estado: índice de la tarjeta activa y si el auto-play está pausado
   const [current, setCurrent] = useState(0); // Índice de la tarjeta activa
-  const [isPaused, setIsPaused] = useState(false); // Controla si el auto-play está pausado
   const [cardsPerPage, setCardsPerPage] = useState(1);
   const testimonials = testimonialsData;
 
@@ -27,8 +26,10 @@ export default function TestimonialCardSlider() {
 
   // Pausa el auto-play por 3 segundos cuando el usuario interactúa (dots o scroll manual)
   const handleInteraction = () => {
-    setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 3000);
+    // setIsPaused(true); // Eliminar si no se usa
+    setTimeout(() => {
+      // setIsPaused(false); // Eliminar si no se usa
+    }, 3000);
   };
 
 
@@ -62,13 +63,13 @@ export default function TestimonialCardSlider() {
 
   // Auto-play: avanza automáticamente cada 5 segundos si no está pausado
   // useEffect(() => {
-  //   if (isPaused) return;
+  //   if (isPaused) return; // Eliminar si no se usa
   //   const interval = setInterval(() => {
   //     console.log('[AUTO-PLAY] Avanza slide', current + 1);
   //     setCurrent((prev) => (prev + 1) % validTestimonials.length);
   //   }, 5000);
   //   return () => clearInterval(interval);
-  // }, [isPaused, validTestimonials.length, current]);
+  // }, [isPaused, validTestimonials.length, current]); // Eliminar si no se usa
 
   // Centra la tarjeta activa en el contenedor usando scroll horizontal suave
   // (esto es necesario porque el usuario puede ver varias tarjetas a la vez y hacer scroll manual)
@@ -101,10 +102,10 @@ export default function TestimonialCardSlider() {
     const onScroll = () => {
       if (isProgrammaticScroll.current) return; // Ignora scroll programático
       console.log('[SCROLL MANUAL] Usuario scrollea');
-      setIsPaused(true); // Pausa el auto-play mientras el usuario interactúa
+      // setIsPaused(true); // Eliminar si no se usa
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        setIsPaused(false);
+        // setIsPaused(false); // Eliminar si no se usa
         // Detecta la tarjeta más centrada en el contenedor
         const cards = Array.from(container.children) as HTMLElement[];
         const containerRect = container.getBoundingClientRect();
