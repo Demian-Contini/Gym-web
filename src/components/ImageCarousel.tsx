@@ -16,15 +16,13 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
   const [isPaused, setIsPaused] = useState(false);
 
   // Función de auto-play con pausa en interacción
-  useEffect(() => {
-    if (isPaused) return;
-    
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Cambia de imagen cada 5 segundos
-
-    return () => clearInterval(interval);
-  }, [images.length, isPaused]);
+  // useEffect(() => {
+  //   if (isPaused) return;
+  //   const interval = setInterval(() => {
+  //     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  //   }, 5000); // Cambia de imagen cada 5 segundos
+  //   return () => clearInterval(interval);
+  // }, [images.length, isPaused]);
 
   // Pausa auto-play cuando el usuario interactúa
   const handleInteraction = () => {

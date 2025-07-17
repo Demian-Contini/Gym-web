@@ -61,14 +61,14 @@ export default function TestimonialCardSlider() {
   };
 
   // Auto-play: avanza automáticamente cada 5 segundos si no está pausado
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      console.log('[AUTO-PLAY] Avanza slide', current + 1);
-      setCurrent((prev) => (prev + 1) % validTestimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isPaused, validTestimonials.length, current]);
+  // useEffect(() => {
+  //   if (isPaused) return;
+  //   const interval = setInterval(() => {
+  //     console.log('[AUTO-PLAY] Avanza slide', current + 1);
+  //     setCurrent((prev) => (prev + 1) % validTestimonials.length);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [isPaused, validTestimonials.length, current]);
 
   // Centra la tarjeta activa en el contenedor usando scroll horizontal suave
   // (esto es necesario porque el usuario puede ver varias tarjetas a la vez y hacer scroll manual)
@@ -132,66 +132,69 @@ export default function TestimonialCardSlider() {
 
 
   return (
-    <div className="max-w-6xl mx-auto bg-white rounded-2xl p-3 md:p-10">
-      <h2 className="text-xl md:text-3xl font-bold text-black mb-6 md:mb-8 text-center">
-        Lo que dicen mis clientes
-      </h2>
-      <div
-        ref={containerRef}
-        className="flex gap-4 md:gap-8 overflow-x-auto pb-4 snap-x scroll-smooth"
-        style={{ scrollBehavior: 'smooth' }}
-      >
-        {validTestimonials.map((testimonial) => {
-          const [main, rest] = splitComment(testimonial.comment);
-          return (
-            <div
-              key={testimonial.id}
-              role="card"
-              className="relative w-72 md:w-80 flex-shrink-0 bg-white border border-blue-200 rounded-2xl shadow-lg p-4 md:p-6 flex flex-col items-center text-center snap-center transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl"
-              style={{ minHeight: 260 }}
-            >
-              {/* Badge y foto centrados arriba */}
-              <div className="flex flex-col items-center gap-1 mb-2 md:mb-3">
-                <span className="bg-blue-100 text-blue-700 text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow border border-blue-200">
-                  {testimonial.results}
-                </span>
-                <Image
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  width={56}
-                  height={56}
-                  className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover border-2 border-blue-500 shadow"
-                />
-              </div>
-              {/* Nombre */}
-              <h4 className="font-semibold text-sm md:text-base text-black mb-1 z-10">{testimonial.name}</h4>
-              {/* Frase destacada */}
-              <blockquote className="text-blue-700 text-base md:text-lg font-bold italic mb-1 leading-snug z-10">
-                “{main}”
-              </blockquote>
-              {/* Resto del comentario */}
-              {rest && (
-                <blockquote className="text-gray-700 text-xs md:text-sm italic mb-2 leading-relaxed z-10">
-                  {rest}
+    <div id="testimonios" className="w-full bg-black py-8 md:py-16">
+      <div className="max-w-6xl mx-auto bg-black rounded-2xl p-3 md:p-10">
+        <h2 className="text-xl md:text-3xl font-bold text-white mb-6 md:mb-8 text-center">
+          Lo que dicen mis clientes
+        </h2>
+        <div
+          ref={containerRef}
+          className="flex gap-4 md:gap-8 overflow-x-auto pb-4 snap-x scroll-smooth"
+          style={{ scrollBehavior: 'smooth' }}
+        >
+          {validTestimonials.map((testimonial) => {
+            const [main, rest] = splitComment(testimonial.comment);
+            return (
+              <div
+                key={testimonial.id}
+                role="card"
+                className="relative w-72 md:w-80 flex-shrink-0 bg-gray-200 border border-red-700 rounded-2xl shadow-lg p-4 md:p-6 flex flex-col items-center text-center snap-center transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl"
+                style={{ minHeight: 260 }}
+              >
+                {/* Badge y foto centrados arriba */}
+                <div className="flex flex-col items-center gap-1 mb-2 md:mb-3">
+                  <span className="bg-red-100 text-red-700 text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow border border-red-200">
+                    {testimonial.results}
+                  </span>
+                  <Image
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    width={56}
+                    height={56}
+                    className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover border-2 border-red-500 shadow"
+                  />
+                </div>
+                {/* Nombre */}
+                <h4 className="font-semibold text-sm md:text-base text-black mb-1 z-10">{testimonial.name}</h4>
+                {/* Frase destacada */}
+                <blockquote className="text-red-600 text-base md:text-lg font-bold italic mb-1 leading-snug z-10">
+                  “{main}”
                 </blockquote>
-              )}
-             
-            </div>
-          );
-        })}
-      </div>
-      {/* Dots indicator */}
-      <div className="flex space-x-2 mt-4 md:mt-6 justify-center">
-        {Array.from({ length: numPages }).map((_, pageIdx) => (
-          <button
-            key={pageIdx}
-            onClick={() => goToPage(pageIdx)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 active:scale-125 ${
-              pageIdx === currentPage ? 'bg-blue-600 scale-110 shadow-lg' : 'bg-gray-300 hover:bg-gray-400'
-            }`}
-            aria-label={`Ir a página ${pageIdx + 1}`}
-          />
-        ))}
+                {/* Resto del comentario */}
+                {rest && (
+                  <blockquote className="text-gray-800 text-xs md:text-sm italic mb-2 leading-relaxed z-10">
+                    {rest}
+                  </blockquote>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        {/* Dots indicator */}
+        <div className="flex space-x-2 mt-4 md:mt-6 justify-center">
+          {Array.from({ length: numPages }).map((_, pageIdx) => (
+            <button
+              key={pageIdx}
+              onClick={() => goToPage(pageIdx)}
+              className={`w-3 h-3 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300 active:scale-125
+                ${pageIdx === currentPage
+                  ? 'bg-red-600 border-red-600 scale-110 shadow-lg'
+                  : 'bg-transparent border-red-500 hover:bg-red-200'}
+              `}
+              aria-label={`Ir a página ${pageIdx + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

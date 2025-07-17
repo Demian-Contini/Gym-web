@@ -17,22 +17,20 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Título Personal Trainer */}
-      <section className="py-12 px-4 md:px-8 lg:px-12 bg-white border-b border-gray-200">
+      <section className="py-12 px-4 md:px-8 lg:px-12 bg-black border-b border-red-700">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-black mb-2 flex items-center justify-center gap-3">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
             Personal Trainer
             <Image src="/Verificado.png" alt="Verificado" width={32} height={32} className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 inline-block align-middle" />
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-600 text-center">
-            +50 mentorías
-          </p>
+          <p className="text-red-500 font-bold">+50 mentorías</p>
         </div>
       </section>
 
       {/* Video de YouTube con controles clasicos */}
       <section
         id="inicio"
-        className="flex flex-col items-center justify-center min-h-[60vh] py-12 px-4 md:px-8 lg:px-12 text-center relative overflow-hidden"
+        className="flex flex-col items-center justify-center min-h-[60vh] py-12 px-4 md:px-8 lg:px-12 text-center relative overflow-hidden bg-black"
       >
         {/* Video responsivo y más grande en móvil */}
         <div className="absolute inset-0 w-full h-full z-0 flex items-center justify-center">
@@ -51,12 +49,12 @@ export default function Home() {
       </section>
 
       {/* Botón debajo de la imagen */}
-      <section className="py-12 px-4 md:px-8 lg:px-12 bg-white">
+      <section className="py-12 px-4 md:px-8 lg:px-12 bg-black">
         <div className="max-w-7xl mx-auto text-center">
           <a href="#contacto">
             <button
               type="button"
-              className="inline-block bg-orange-700 hover:bg-orange-600 active:bg-orange-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-200 cursor-pointer text-xl md:text-2xl hover:scale-105"
+              className="inline-block bg-red-700 hover:bg-red-600 active:bg-red-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-200 cursor-pointer text-xl md:text-2xl hover:scale-105"
             >
               ¡Inicia tus cambios!
             </button>
@@ -66,12 +64,11 @@ export default function Home() {
 
       
       {/* Sección Cambios Físicos */}
-      {/*
-      <section id="cambios-fisicos" className="py-12 px-4 md:px-8 lg:px-12 bg-white border-t border-gray-200">
+      <section id="cambios-fisicos" className="py-12 px-4 md:px-8 lg:px-12 bg-black border-t border-red-700">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 text-center">Cambios Físicos</h2>
-          <p className="text-gray-700 text-lg md:text-xl text-center mb-8 md:mb-12 text-balance max-w-4xl mx-auto">
-            Aquí podrás ver el progreso de mis clientes a lo largo del tiempo.
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-center">Cambios Físicos</h2>
+          <p className="text-white text-lg md:text-xl text-center mb-8 md:mb-12 text-balance max-w-4xl mx-auto">
+            Las transformaciones más impresionantes de mis clientes.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {Array.from({ length: 6 }).map((_, idx) => (
@@ -88,10 +85,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-*/}
 
       {/* Sección Carrusel de Imágenes */}
-      <section id="carrusel" className="py-12 px-4 md:px-8 lg:px-12 bg-white">
+      <section id="carrusel" className="py-12 px-4 md:px-8 lg:px-12 bg-black">
         <div className="w-full max-w-7xl mx-auto">
           <ImageCarousel
             images={[
@@ -100,16 +96,18 @@ export default function Home() {
               '/C2.jpg',
               '/Cambiosfisic.png',
               '/C1.jpg',
-              '/C2.jpg'
             ]}
-            title="Galería de Cambios"
-            description="Las transformaciones más impresionantes de nuestros clientes"
           />
+          {/* Texto debajo del carrusel */}
+          <div className="mt-8 text-center">
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">¡Inspírate con estos resultados!</h3>
+            <p className="text-white text-lg md:text-xl">Tú también puedes lograr tu mejor versión. ¡Comienza hoy!</p>
+          </div>
         </div>
       </section>
 
       {/* Sección Testimonios */}
-      <section id="testimonios" className="py-12 px-4 md:px-8 lg:px-12 bg-white">
+      <section id="testimonios" className="py-12 px-4 md:px-8 lg:px-12 bg-">
         <TestimonialCardSlider />
       </section>
 

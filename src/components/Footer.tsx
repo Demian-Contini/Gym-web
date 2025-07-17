@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-blue-900 text-white py-8 px-4 mt-12 border-t-4 border-blue-700">
+    <footer className="w-full bg-black text-white border-t-2 border-red-700 py-8 px-4">
       <div className="max-w-3xl mx-auto flex flex-col items-center gap-4">
         {/* Mini menú de navegación */}
         <nav className="mb-4">
@@ -16,20 +16,14 @@ export default function Footer() {
         </nav>
         {/* Nombre y eslogan */}
         <h3 className="text-2xl md:text-3xl font-extrabold tracking-wide text-center">Lucas Moris</h3>
-        <p className="text-base md:text-lg font-semibold text-blue-200 text-center mb-2">&ldquo;Transforma tu vida, no solo tu cuerpo&rdquo;</p>
+        <p className="text-white text-base md:text-lg font-semibold text-center mb-2">&ldquo;Transforma tu vida, no solo tu cuerpo&rdquo;</p>
 
         {/* Redes sociales (sin acción) */}
         <div className="flex items-center justify-center gap-6 mt-2">
-          {/* Instagram */}
-          <a
-            href="https://www.instagram.com/lucamoriss.fit/"
-            onClick={e => e.preventDefault()}
-            className="flex flex-col items-center group focus:outline-none text-xs font-bold text-white group-hover:text-blue-200"
-            aria-label="Instagram"
-            style={{ textDecoration: 'none', textShadow: '0.25px 0.25px 0.5px rgba(0,0,0,0.15)' }}
-          >
-            <Image src="/instagramF.png" alt="Instagram" width={32} height={32} className="w-8 h-8 mb-1" />
-            Instagram
+          {/* TikTok */}
+          <a href="https://www.tiktok.com/@lucamoriss.fit" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="flex flex-col items-center group focus:outline-none text-xs font-bold text-white group-hover:text-blue-200" style={{ textDecoration: 'none', textShadow: '0.25px 0.25px 0.5px rgba(0,0,0,0.15)' }}>
+            <Image src="/tik-tok.png" alt="TikTok" width={32} height={32} className="w-8 h-8 mb-1" />
+            TikTok
           </a>
           {/* WhatsApp */}
           <a
@@ -39,7 +33,7 @@ export default function Footer() {
             aria-label="WhatsApp"
             style={{ textDecoration: 'none', textShadow: '0.25px 0.25px 0.5px rgba(0,0,0,0.15)' }}
           >
-            <Image src="/whatsappF.png" alt="WhatsApp" width={32} height={32} className="w-8 h-8 mb-1" />
+            <Image src="/whats-app.png" alt="WhatsApp" width={32} height={32} className="w-8 h-8 mb-1" />
             WhatsApp
           </a>
           {/* Email */}
@@ -55,7 +49,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <div className="mt-4 text-center text-xs text-blue-300">
+        <div className="mt-4 text-center text-xs text-white">
           &copy; {new Date().getFullYear()} Lucas Moriss. Todos los derechos reservados.
         </div>
       </div>
