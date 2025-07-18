@@ -63,38 +63,17 @@ export default function Home() {
       </section>
 
       
-      {/* Sección Cambios Físicos */}
-      <section id="cambios-fisicos" className="py-12 px-4 md:px-8 lg:px-12 bg-black border-t border-red-700">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-center">Cambios Físicos</h2>
-          <p className="text-white text-lg md:text-xl text-center mb-8 md:mb-12 text-balance max-w-4xl mx-auto">
-            Las transformaciones más impresionantes de mis clientes.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
-            {Array.from({ length: 6 }).map((_, idx) => (
-              <div key={idx} className="w-full aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-                <Image
-                  src="/Cambiosfisic.png"
-                  alt={`Cambio físico ${idx + 1}`}
-                  width={500}
-                  height={625}
-                  className="w-full h-full object-cover object-center transition-transform duration-300"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
       {/* Sección Carrusel de Imágenes */}
       <section id="carrusel" className="py-12 px-4 md:px-8 lg:px-12 bg-black">
         <div className="w-full max-w-7xl mx-auto">
           <ImageCarousel
             images={[
-              '/Cambiosfisic.png',
-              '/C1.jpg',
-              '/C2.jpg',
-              '/Cambiosfisic.png',
+              '/1.jpeg',
+              '/2.jpeg',
+              '/3.jpeg',
+              '/4.jpeg',
               '/C1.jpg',
             ]}
           />
