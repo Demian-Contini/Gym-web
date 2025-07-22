@@ -17,8 +17,10 @@ export default function Form() {
     setSuccess('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
     if (!form.nombre || !form.apellido || !form.email || !form.comentario) {
       setError('Por favor completa todos los campos.');
       return;
@@ -27,8 +29,28 @@ export default function Form() {
       setError('El email no es válido.');
       return;
     }
-    setSuccess('¡Mensaje enviado! (esto es solo una demo)');
-    setForm({ nombre: '', apellido: '', email: '', comentario: '' });
+  
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${form.nombre} ${form.apellido}`,
+          email: form.email,
+          message: form.comentario,
+        }),
+      });
+  
+      const data = await res.json();
+      if (data.success) {
+        setSuccess('Mensaje enviado correctamente! Pronto nos pondremos en contacto con vos.');
+        setForm({ nombre: '', apellido: '', email: '', comentario: '' });
+      } else {
+        setError('Hubo un error al enviar el mensaje. Intenta nuevamente.');
+      }
+    } catch (err) {
+      setError('Hubo un error al enviar el mensaje. Intenta nuevamente.');
+    }
   };
 
   return (
