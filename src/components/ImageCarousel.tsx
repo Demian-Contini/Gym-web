@@ -93,11 +93,6 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
     );
   };
 
-  const goToSlide = (index: number) => {
-    handleInteraction();
-    setCurrentIndex(index);
-  };
-
   return (
     <div className="relative w-full max-w-7xl mx-auto">
       {title && (
