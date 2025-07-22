@@ -5,7 +5,7 @@ import ImageCarousel from '../components/ImageCarousel';
 import TestimonialCardSlider from '../components/TestimonialCardSlider';
 import Form from '../components/Form';
 import FloatingMenu from '../components/FloatingMenu';
-
+import Asesorias from '@/components/Asesorias';
 
 export default function Home() {
 
@@ -60,7 +60,11 @@ export default function Home() {
       </section>
 
       
-    
+       {/* Sección Asesorias */}
+       <section id="asesorias" className="py-12 px-4 md:px-8 lg:px-12 bg-">
+        <Asesorias />
+      </section>
+
 
       {/* Sección Carrusel de Imágenes */}
       <section id="carrusel" className="py-12 px-4 md:px-8 lg:px-12 bg-black">
