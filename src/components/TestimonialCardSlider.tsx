@@ -14,136 +14,143 @@ function splitComment(comment: string) {
 
 export default function TestimonialCardSlider() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isProgrammaticScroll = useRef(false); // Flag robusto
-
-  // Estado: índice de la tarjeta activa y si el auto-play está pausado
-  const [current, setCurrent] = useState(0); // Índice de la tarjeta activa
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const [cardsPerPage, setCardsPerPage] = useState(1);
-  const testimonials = testimonialsData;
 
-  // Solo testimonios válidos
-  const validTestimonials = testimonials.filter(t => t && t.name && t.comment && t.results);
-
-  // Pausa el auto-play por 3 segundos cuando el usuario interactúa (dots o scroll manual)
-  const handleInteraction = () => {
-    // setIsPaused(true); // Eliminar si no se usa
-    setTimeout(() => {
-      // setIsPaused(false); // Eliminar si no se usa
-    }, 3000);
-  };
-
-
-
-  // Detecta cuántas tarjetas caben en pantalla
+  // Calcular cuántas tarjetas entran visibles
   useEffect(() => {
-    function updateCardsPerPage() {
+    const updateCardsPerPage = () => {
       const container = containerRef.current;
-      if (!container) return setCardsPerPage(1);
-      const card = container.querySelector('div[role="card"]');
-      if (!card) return setCardsPerPage(1);
-      const containerWidth = container.offsetWidth;
-      const cardWidth = (card as HTMLElement).offsetWidth;
-      const perPage = Math.max(1, Math.floor(containerWidth / cardWidth));
-      setCardsPerPage(perPage);
-    }
+      if (!container) return;
+      const card = container.querySelector('[role="card"]') as HTMLElement;
+      if (!card) return;
+      const visible = Math.floor(container.clientWidth / card.offsetWidth);
+      setCardsPerPage(visible > 0 ? visible : 1);
+    };
     updateCardsPerPage();
     window.addEventListener('resize', updateCardsPerPage);
     return () => window.removeEventListener('resize', updateCardsPerPage);
   }, []);
 
-  // Calcula el número de páginas
-  const numPages = Math.ceil(validTestimonials.length / cardsPerPage);
-  const currentPage = Math.floor(current / cardsPerPage);
-
-  // Navega a la primera tarjeta de la página seleccionada
-  const goToPage = (pageIdx: number) => {
-    handleInteraction();
-    setCurrent(pageIdx * cardsPerPage);
+  // Actualizar página actual según scroll
+  const handleUserScroll = () => {
+    pauseAutoScroll();
+    updateCurrentPage();
+    resumeTimeoutRef.current = setTimeout(() => {
+      startAutoScroll();
+    }, 2000);
   };
 
-  // Auto-play: avanza automáticamente cada 5 segundos si no está pausado
-  // useEffect(() => {
-  //   if (isPaused) return; // Eliminar si no se usa
-  //   const interval = setInterval(() => {
-  //     console.log('[AUTO-PLAY] Avanza slide', current + 1);
-  //     setCurrent((prev) => (prev + 1) % validTestimonials.length);
-  //   }, 5000);
-  //   return () => clearInterval(interval);
-  // }, [isPaused, validTestimonials.length, current]); // Eliminar si no se usa
-
-  // Centra la tarjeta activa en el contenedor usando scroll horizontal suave
-  // (esto es necesario porque el usuario puede ver varias tarjetas a la vez y hacer scroll manual)
-  const prevCurrent = useRef(current);
-  useEffect(() => {
-    if (prevCurrent.current !== current) {
-      const container = containerRef.current;
-      if (!container) return;
-      const card = container.children[current] as HTMLElement;
-      if (card) {
-        isProgrammaticScroll.current = true; // Desactiva scroll manual
-        console.log('[SCROLL PROG] Centra tarjeta', current);
-        // Calcula la posición horizontal para centrar la tarjeta activa
-        const scrollLeft =
-          card.offsetLeft - (container.offsetWidth / 2 - card.offsetWidth / 2);
-        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-        // Espera a que termine la animación antes de volver a permitir scroll manual
-        setTimeout(() => { isProgrammaticScroll.current = false; }, 700);
-      }
-    }
-    prevCurrent.current = current;
-  }, [current]);
-
-  // Cuando el usuario scrollea manualmente, detecta cuál tarjeta está más centrada
-  // y la marca como activa (actualiza el índice)
-  useEffect(() => {
+  const updateCurrentPage = () => {
     const container = containerRef.current;
     if (!container) return;
-    let timeout: NodeJS.Timeout;
-    const onScroll = () => {
-      if (isProgrammaticScroll.current) return; // Ignora scroll programático
-      console.log('[SCROLL MANUAL] Usuario scrollea');
-      // setIsPaused(true); // Eliminar si no se usa
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        // setIsPaused(false); // Eliminar si no se usa
-        // Detecta la tarjeta más centrada en el contenedor
-        const cards = Array.from(container.children) as HTMLElement[];
-        const containerRect = container.getBoundingClientRect();
-        let minDelta = Infinity;
-        let bestIdx = current;
-        cards.forEach((card, idx) => {
-          const rect = card.getBoundingClientRect();
-          const cardCenter = (rect.left + rect.right) / 2;
-          const containerCenter = (containerRect.left + containerRect.right) / 2;
-          const delta = Math.abs(cardCenter - containerCenter);
-          if (delta < minDelta) {
-            minDelta = delta;
-            bestIdx = idx;
-          }
-        });
-        if (bestIdx !== current) {
-          console.log('[SCROLL MANUAL] Actualiza índice a', bestIdx);
-          setCurrent(bestIdx); // Solo actualiza si realmente cambió
-        }
-      }, 800); // Espera a que termine el scroll (debounce aumentado)
-    };
-    container.addEventListener('scroll', onScroll, { passive: true });
-    return () => container.removeEventListener('scroll', onScroll);
-  }, [current]);
+    const scrollLeft = container.scrollLeft;
+    const card = container.querySelector('[role="card"]') as HTMLElement;
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 16; // gap-4 = 16px
+    const page = Math.round(scrollLeft / cardWidth);
+    setCurrentPage(page);
+  };
 
+  // Scroll automático
+  const startAutoScroll = () => {
+    const container = containerRef.current;
+    if (!container) return;
+    let scrollAmount = container.scrollLeft;
+    const scrollStep = 1;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      if (!container) return;
+      if (scrollAmount >= maxScroll) {
+        scrollAmount = 0;
+      } else {
+        scrollAmount += scrollStep;
+      }
+      container.scrollTo({
+        left: scrollAmount,
+        behavior: "auto",
+      });
+      updateCurrentPage();
+    }, 30);
+  };
+
+  const pauseAutoScroll = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    startAutoScroll();
+    const container = containerRef.current;
+    if (!container) return;
+    container.addEventListener("scroll", handleUserScroll, { passive: true });
+    return () => {
+      pauseAutoScroll();
+      if (container) {
+        container.removeEventListener("scroll", handleUserScroll);
+      }
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  // Función para avanzar o retroceder el slider con flechas
+  const scrollByCards = (direction: 'left' | 'right') => {
+    const container = containerRef.current;
+    if (!container) return;
+    const card = container.querySelector('[role="card"]') as HTMLElement;
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 16; // gap-4 = 16px
+    const scrollAmount = cardWidth * cardsPerPage;
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+    setTimeout(updateCurrentPage, 350); // Actualiza el dot después del scroll
+  };
+
+  // Calcular número de páginas
+  const numPages = Math.max(1, Math.ceil(testimonialsData.length / cardsPerPage));
 
   return (
     <div id="testimonios" className="w-full bg-black py-8 md:py-16">
-      <div className="max-w-6xl mx-auto bg-black rounded-2xl p-3 md:p-10">
+      <div className="max-w-6xl mx-auto bg-black rounded-2xl p-3 md:p-10 relative">
         <h2 className="text-xl md:text-3xl font-bold text-white mb-6 md:mb-8 text-center">
           Lo que dicen mis clientes
         </h2>
+        {/* Flechas solo en desktop */}
+        <button
+          type="button"
+          aria-label="Anterior"
+          onClick={() => scrollByCards('left')}
+          className="hidden md:flex items-center justify-center absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-red-600 text-white hover:bg-red-700 shadow transition-all"
+          style={{ fontSize: 18 }}
+        >
+          &#8592;
+        </button>
+        <button
+          type="button"
+          aria-label="Siguiente"
+          onClick={() => scrollByCards('right')}
+          className="hidden md:flex items-center justify-center absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-red-600 text-white hover:bg-red-700 shadow transition-all"
+          style={{ fontSize: 18 }}
+        >
+          &#8594;
+        </button>
         <div
           ref={containerRef}
-          className="flex gap-4 md:gap-8 overflow-x-auto pb-4 snap-x scroll-smooth"
+          className="flex gap-4 md:gap-8 overflow-x-auto pb-4 snap-x scroll-smooth hide-scrollbar"
           style={{ scrollBehavior: 'smooth' }}
         >
-          {validTestimonials.map((testimonial) => {
+          {testimonialsData.map((testimonial) => {
             const [main, rest] = splitComment(testimonial.comment);
             return (
               <div
@@ -184,15 +191,12 @@ export default function TestimonialCardSlider() {
         {/* Dots indicator */}
         <div className="flex space-x-2 mt-4 md:mt-6 justify-center">
           {Array.from({ length: numPages }).map((_, pageIdx) => (
-            <button
+            <div
               key={pageIdx}
-              onClick={() => goToPage(pageIdx)}
-              className={`w-3 h-3 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300 active:scale-125
+              className={`w-3 h-3 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300
                 ${pageIdx === currentPage
                   ? 'bg-red-600 border-red-600 scale-110 shadow-lg'
-                  : 'bg-transparent border-red-500 hover:bg-red-200'}
-              `}
-              aria-label={`Ir a página ${pageIdx + 1}`}
+                  : 'bg-transparent border-red-500'}`}
             />
           ))}
         </div>

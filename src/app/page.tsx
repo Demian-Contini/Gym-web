@@ -6,12 +6,8 @@ import TestimonialCardSlider from '../components/TestimonialCardSlider';
 import Form from '../components/Form';
 import FloatingMenu from '../components/FloatingMenu';
 
+
 export default function Home() {
-
-
-
-
-
 
 
   return (
@@ -47,6 +43,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Botón debajo de la imagen */}
       <section className="py-12 px-4 md:px-8 lg:px-12 bg-black">

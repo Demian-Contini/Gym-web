@@ -2,7 +2,7 @@
 // ---------- Seccion Carousel ----------
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 interface ImageCarouselProps {
@@ -13,20 +13,70 @@ interface ImageCarouselProps {
 
 export default function ImageCarousel({ images, title, description }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
+  const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Función de auto-play con pausa en interacción
-  // useEffect(() => {
-  //   if (isPaused) return;
-  //   const interval = setInterval(() => {
-  //     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  //   }, 5000); // Cambia de imagen cada 5 segundos
-  //   return () => clearInterval(interval);
-  // }, [images.length, isPaused]);
+  // Autoplay: avanza cada 5s, se pausa si el usuario interactúa
+  useEffect(() => {
+    startAutoplay();
+    return () => {
+      stopAutoplay();
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
+    // eslint-disable-next-line
+  }, [currentIndex, images.length]);
 
-  // Pausa auto-play cuando el usuario interactúa
+  const startAutoplay = () => {
+    stopAutoplay();
+    autoplayRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000); // ---------> Cambia de imagen cada 5 segundos
+  };
+  const stopAutoplay = () => {
+    if (autoplayRef.current) clearInterval(autoplayRef.current);
+    autoplayRef.current = null;
+  };
+  const pauseAutoplay = () => {
+    stopAutoplay();
+    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    pauseTimeoutRef.current = setTimeout(() => {
+      startAutoplay();
+    }, 3000);
+  };
+
+  // Swipe handlers solo para touch
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swipe izquierda: siguiente
+        setCurrentIndex((prevIndex) =>
+          prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+      } else {
+        // Swipe derecha: anterior
+        setCurrentIndex((prevIndex) =>
+          prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+      }
+      pauseAutoplay();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
+  // Pausa autoplay cuando el usuario interactúa con botones
   const handleInteraction = () => {
-    // setIsPaused(true); // Eliminado
-    // setTimeout(() => setIsPaused(false), 3000); // Eliminado
+    pauseAutoplay();
   };
 
   const goToPrevious = () => {
@@ -63,7 +113,12 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
       
       <div className="relative overflow-hidden rounded-xl shadow-2xl">
         {/* Imagen principal */}
-        <div className="relative h-80 md:h-96 lg:h-[600px] xl:h-[700px]">
+        <div
+          className="relative h-80 md:h-96 lg:h-[600px] xl:h-[700px] select-none"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {images.map((image, index) => (
             <div
               key={index}
@@ -81,6 +136,7 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
                 className="w-full h-full object-cover"
                 priority={index === 0}
                 quality={90}
+                draggable={false}
               />
             </div>
           ))}
@@ -90,10 +146,8 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
         <button
           onClick={goToPrevious}
           className="absolute left-2 md:left-4 lg:left-8 top-1/2 transform -translate-y-1/2 
-            bg-black/60 backdrop-blur-sm border border-white/20 
             text-white p-2 md:p-3 lg:p-4 rounded-full 
-            transition-all duration-300 active:scale-95 
-            hover:bg-black/80 hover:scale-110 z-10
+            bg-transparent hover:bg-white/10 transition-all duration-300 active:scale-95 hover:scale-110 z-10
             touch-manipulation"
           aria-label="Imagen anterior"
         >
@@ -105,10 +159,8 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
         <button
           onClick={goToNext}
           className="absolute right-2 md:right-4 lg:right-8 top-1/2 transform -translate-y-1/2 
-            bg-black/60 backdrop-blur-sm border border-white/20 
             text-white p-2 md:p-3 lg:p-4 rounded-full 
-            transition-all duration-300 active:scale-95 
-            hover:bg-black/80 hover:scale-110 z-10
+            bg-transparent hover:bg-white/10 transition-all duration-300 active:scale-95 hover:scale-110 z-10
             touch-manipulation"
           aria-label="Siguiente imagen"
         >
@@ -123,23 +175,7 @@ export default function ImageCarousel({ images, title, description }: ImageCarou
           {currentIndex + 1} / {images.length}
         </div>
 
-        {/* Indicador de puntos */}
-        <div className="absolute bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3 z-10">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-full 
-                transition-all duration-300 active:scale-125 
-                touch-manipulation ${
-                index === currentIndex 
-                  ? 'bg-white scale-110 shadow-lg' 
-                  : 'bg-white/60 hover:bg-white/80'
-              }`}
-              aria-label={`Ir a imagen ${index + 1}`}
-            />
-          ))}
-        </div>
+
       </div>
     </div>
   );
